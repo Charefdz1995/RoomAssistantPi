@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="Charef Eddine CHERRAD">
+  <title>RAssPi-Home</title>
+    <link href={% static 'vendor/bootstrap/css/bootstrap.min.css' %} rel="stylesheet">
+  <link href={% static 'vendor/font-awesome/css/font-awesome.min.css' %} rel="stylesheet" type="text/css">
+  <link href={% static 'css/sb-admin.css' %} rel="stylesheet">
+</head>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand">RoomPi</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+          <a class="nav-link" id="dashboard">
+            <i class="fa fa-fw fa-dashboard"></i>
+            <span class="nav-link-text">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="devices">
+          <a class="nav-link" id="devices">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">Devices</span>
+          </a>
+        </li>
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" id="settings">
+            <i class="fa fa-fw fa-wrench"></i>
+            <span class="nav-link-text">Settings</span>
+          </a>
+        </li>
+
+      </ul>
+      <ul class="navbar-nav sidenav-toggler">
+        <li class="nav-item">
+          <a class="nav-link text-center" id="sidenavToggler">
+            <i class="fa fa-fw fa-angle-left"></i>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+            <i class="fa fa-fw fa-sign-out"></i>Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="content-wrapper">
+      <div class="container-fluid" id="devices-container" style="display:none;">
+          <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Devices</a>
+        </li>
+      </ol>
+          <div class="card mb-3">
+  <div class="card-header">
+    <i class="fa fa-table"></i>Lights tables
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>GPIO</th>
+            <th>Voice command on</th>
+            <th>Voice command Off</th>
+            <th>Switch</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for light in lights_list %}
+
+          <tr>
+            <td>{{ light.name }}</td>
+            <td>{{ light.gpio }}</td>
+            <td>{{ light.oncommand }}</td>
+            <td>{{ light.offcommand }}</td>
+              <td><a href="{% url 'switch' light.id %}">on/off</a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+      <div class="card mb-3">
+  <div class="card-header">
+    <i class="fa fa-table"></i>Doors tables
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>GPIO</th>
+            <th>Voice command on</th>
+            <th>Voice command Off</th>
+            <th>Switch</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for door in doors_list %}
+
+          <tr>
+            <td>{{ door.name }}</td>
+            <td>{{ door.gpio }}</td>
+            <td>{{ door.oncommand }}</td>
+            <td>{{ door.offcommand }}</td>
+              <td><button id="{{ door.gpio }}">on/off</button></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+      <div class="card mb-3">
+  <div class="card-header">
+    <i class="fa fa-table"></i>Fans tables
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>GPIO</th>
+            <th>Voice command on</th>
+            <th>Voice command Off</th>
+            <th>Switch</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for fan in fans_list %}
+
+          <tr>
+            <td>{{ fan.name }}</td>
+            <td>{{ fan.gpio }}</td>
+            <td>{{ fan.oncommand }}</td>
+            <td>{{ fan.offcommand }}</td>
+              <td><button  id="{{ fan.gpio }}">on/off</button></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+  </div>
+
+    <div class="container-fluid" id="dashboard-container" style="display:none;">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Dashboard</a>
+        </li>
+      </ol>
+      <hr>
+      <p>RoomPi gives you the abbility of adding devices to your Raspberry Pi then Control it with voice command.</p>
+      <a class="btn btn-primary"  id="avc">Add voice command</a>
+      <a class="btn btn-primary"  id="acr">Add conversation routine</a>
+      <!-- Blank div to give the page height to preview the fixed vs. static navbar-->
+      <div style="padding: 20px;">
+        <form id="convform" action="{% url 'add' %}" method="POST" style="display:none;">
+            {% csrf_token %}
+          <div class="form-group">
+            <label for="InputEmail1">Question:</label>
+              {{ convform.question }}
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Response:</label>
+              {{ convform.response }}
+          </div>
+          <button id="add" type="submit" class="btn btn-primary btn-block">ADD</button>
+          <button id="cancel" class="btn btn-primary btn-block">Cancel</button>
+        </form>
+        <!-- second form -->
+        <form id="deviceform" method="POST" action="{% url 'add2' %}" style="display:none;">
+            {% csrf_token %}
+          <div class="form-group">
+            <label for="exampleInputEmail1">Device:</label>
+            {{ deviceform.type }}
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">GPIO:</label>
+            {{ deviceform.gpio }}
+          </div>
+            <div class="form-group">
+            <label for="exampleInputEmail1">Name:</label>
+                {{ deviceform.name }}
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">On command:</label>
+              {{ deviceform.oncom }}
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Off command:</label>
+              {{ deviceform.offcom }}
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">ADD</button>
+          <button id="cancel" class="btn btn-primary btn-block">Cancel</button>
+        </form>
+      </div>
+    </div>
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+    <footer class="sticky-footer">
+      <div class="container">
+        <div class="text-center">
+          <small>Copyright © RoomAssistantPi</small>
+        </div>
+      </div>
+    </footer>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <a class="btn btn-primary" href="login.html">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src={% static 'vendor/jquery/jquery.min.js' %}></script>
+    <script src={% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}></script>
+    <!-- Core plugin JavaScript-->
+    <script src={% static 'vendor/jquery-easing/jquery.easing.min.js' %}></script>
+    <!-- Custom scripts for all pages-->
+    <script src={% static 'js/sb-admin.min.js' %}></script>
+    <!-- Custom scripts for this page-->
+    <!-- Toggle between fixed and static navbar-->
+    <script>
+    $('#acr').click(function() {
+      document.getElementById("convform").style.display="block";
+      document.getElementById("deviceform").style.display="none";
+    });
+    </script>
+    <script>
+    $('#avc').click(function() {
+      document.getElementById("convform").style.display="none";
+      document.getElementById("deviceform").style.display="block";
+    });
+    </script>
+      <script>
+    $('#dashboard').click(function() {
+      document.getElementById("devices-container").style.display="none";
+      document.getElementById("dashboard-container").style.display="block";
+    });
+    </script>
+      <script>
+    $('#devices').click(function() {
+      document.getElementById("devices-container").style.display="block";
+      document.getElementById("dashboard-container").style.display="none";
+    });
+    </script>
+
+  </div>
+</body>
+
+</html>

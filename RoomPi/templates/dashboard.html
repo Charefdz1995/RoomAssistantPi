@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid" id="dashboard-container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Dashboard</a>
+        </li>
+      </ol>
+      <hr>
+      <p>RoomPi gives you the abbility of adding devices to your Raspberry Pi then Control it with voice command.</p>
+      <a class="btn btn-primary"  id="avc">Add voice command</a>
+      <a class="btn btn-primary"  id="acr">Add alarm</a>
+      <!-- Blank div to give the page height to preview the fixed vs. static navbar-->
+      <div style="padding: 20px;">
+        <form id="convform" action="{% url 'add' %}" method="POST" style="display:none;">
+            {% csrf_token %}
+          <div class="form-group">
+            <label for="InputEmail1">GPIO:</label>
+              {{ alarmform.gpio  }}
+          </div>
+            <div class="form-group">
+            <label for="InputEmail1">Name:</label>
+              {{ alarmform.name  }}
+          </div>
+            <div class="form-group">
+            <label for="InputEmail1">E-mail:</label>
+              {{ alarmform.email  }}
+          </div>
+            <div class="form-group">
+            <label for="InputEmail1">Phone:</label>
+              {{ alarmform.phone  }}
+          </div>
+            <div class="form-group">
+            <label for="InputEmail1">Buzzer GPIO:</label>
+              {{ alarmform.buzzer  }}
+          </div>
+          <button id="add" type="submit" class="btn btn-primary btn-block">ADD</button>
+          <button id="cancel" class="btn btn-primary btn-block">Cancel</button>
+        </form>
+        <!-- second form -->
+        <form id="deviceform" method="POST" action="{% url 'add2' %}" style="display:none;">
+            {% csrf_token %}
+          <div class="form-group">
+            <label for="exampleInputEmail1">Device:</label>
+            {{ deviceform.type }}
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">GPIO:</label>
+            {{ deviceform.gpio }}
+          </div>
+            <div class="form-group">
+            <label for="exampleInputEmail1">Name:</label>
+                {{ deviceform.name }}
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">On command:</label>
+              {{ deviceform.oncom }}
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Off command:</label>
+              {{ deviceform.offcom }}
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">ADD</button>
+          <button id="cancel" class="btn btn-primary btn-block">Cancel</button>
+        </form>
+      </div>
+    </div>
+{% endblock %}

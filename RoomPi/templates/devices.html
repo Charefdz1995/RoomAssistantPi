@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid" id="devices-container">
+          <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Devices</a>
+        </li>
+      </ol>
+          <div class="card mb-3">
+  <div class="card-header">
+    <i class="fa fa-table"></i>Lights tables
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>GPIO</th>
+            <th>Voice command on</th>
+            <th>Voice command Off</th>
+            <th>HW-Control</th>
+            <th>SW-Control</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for light in lights_list %}
+
+          <tr>
+            <td>{{ light.name }}</td>
+            <td>{{ light.gpio }}</td>
+            <td>{{ light.oncommand }}</td>
+            <td>{{ light.offcommand }}</td>
+              {% if light.enable == '0' %}
+                  <td><a href="{% url 'switchon' light.id %}">On</a></td>
+              {% else %}
+                  <td><a href="{% url 'switchoff' light.id %}">Off</a></td>
+                {% endif %}
+              <td><a href="{% url 'delete_light' light.id %}">Delete</a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+      <div class="card mb-3">
+  <div class="card-header">
+    <i class="fa fa-table"></i>Doors tables
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>GPIO</th>
+            <th>Voice command on</th>
+            <th>Voice command Off</th>
+             <th>HW-Control</th>
+            <th>SW-Control</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for door in doors_list %}
+
+          <tr>
+            <td>{{ door.name }}</td>
+            <td>{{ door.gpio }}</td>
+            <td>{{ door.oncommand }}</td>
+            <td>{{ door.offcommand }}</td>
+               {% if door.enable == '0' %}
+                  <td><a href="{% url 'open' door.id %}">Open</a></td>
+              {% else %}
+                  <td><a href="{% url 'close' door.id %}">close</a></td>
+                {% endif %}
+          <td><a href="{% url 'delete_door' door.id %}">Delete</a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+      <div class="card mb-3">
+  <div class="card-header">
+    <i class="fa fa-table"></i>Relay switches
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>GPIO</th>
+            <th>Voice command on</th>
+            <th>Voice command Off</th>
+            <th>HW-Control</th>
+            <th>SW-Control</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for fan in fans_list %}
+
+          <tr>
+            <td>{{ fan.name }}</td>
+            <td>{{ fan.gpio }}</td>
+            <td>{{ fan.oncommand }}</td>
+            <td>{{ fan.offcommand }}</td>
+{#              {% if light.enable %}#}
+{#              <td><a href="{% url 'switch' light.id %}">Off</a></td>#}
+{#                  {% else %}#}
+{#                  <td><a href="{% url 'switch' light.id %}">On</a></td>#}
+{#                {% endif %}#}
+          <td><a href="{% url 'delete_fan' fan.id %}">Delete</a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+    <div class="card mb-3">
+  <div class="card-header">
+    <i class="fa fa-table"></i>Alarms
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>GPIO</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Active</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for Alarm in Alarms_list %}
+          <tr>
+            <td>{{ Alarm.name }}</td>
+            <td>{{ Alarm.gpio }}</td>
+            <td>{{ Alarm.phone }}</td>
+            <td>{{ Alarm.email }}</td>
+              {% if Alarm.enable %}
+                  <td><a href="{% url 'alarmoff' Alarm.id %}">Off</a></td>
+              {% else %}
+                  <td><a href="{% url 'alarmon' Alarm.id %}">On</a></td>
+              {% endif %}
+              <td><a href="{% url 'delete_Alarm' Alarm.id %}">Delete</a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
